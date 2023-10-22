@@ -46,7 +46,28 @@ class AuthControllerForFirebase extends StateNotifier<bool> {
   }) async {
     state = true;
 
-    final firebaseUser = await _firebaseAuth.signUp(
+    final result = await _firebaseAuth.signUp(
+        email: email, password: password, context: context);
+
+    result.fold((l) => showSnackBar(context, l.message),
+        (r) => showSnackBar(context, 'Acoount created with ${r.email}'));
+
+    // if (result.isRight()) {
+    //   showSnackBar(context, 'Account created successful.');
+    // } else {
+    //   showSnackBar(context, 'Account not created.');
+    // }
+
+    state = false;
+  }
+
+  void loginWithFirebase(
+      {required String email,
+      required String password,
+      required BuildContext context}) async {
+    state = true;
+
+    final firebaseUser = await _firebaseAuth.signInWithEmail(
         email: email, password: password, context: context);
 
     if (firebaseUser != null) {
@@ -57,9 +78,4 @@ class AuthControllerForFirebase extends StateNotifier<bool> {
 
     state = false;
   }
-
-  void loginWithFirebase(
-      {required String email,
-      required String password,
-      required BuildContext contedxt}) {}
 }

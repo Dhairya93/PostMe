@@ -30,7 +30,7 @@ class AuthAPI implements IAuthAPI {
       return right(account as Account);
     } catch (e, stackTrace) {
       print(e);
-      return left(Failure(e.toString(), stackTrace));
+      return left(Failure(e.toString(), stackTrace: stackTrace));
     }
   }
 }
